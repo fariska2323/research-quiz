@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database II Exams | IS313P</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@500;700&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#eef2f9;--bg2:#dfe7f4;--card:#fff;--line:#dfe4ee;--txt:#141b2d;--mut:#5d6679;--soft:#f3f5fa;
+  --pri:#3c5a95;--pri2:#2f4a80;--chip:#e8eefb;--ok:#2f8f5b;--okbg:#e6f4ec;--okln:#9fd1b4;--bad:#c2414f;--badbg:#fbe7ea;--badln:#eeb0b8;--mark:#9a6a2f;
+  --shadow:0 1px 2px rgba(20,27,45,.04),0 8px 24px rgba(20,27,45,.05);
+}
+html.dark{
+  --bg1:#0e1320;--bg2:#141b2d;--card:#182033;--line:#283149;--txt:#e8ecf5;--mut:#9aa3b8;--soft:#1e2740;
+  --pri:#7d9be0;--pri2:#9db4ea;--chip:#22304f;--okbg:#173527;--okln:#2e6b4a;--badbg:#3a1c22;--badln:#7a3540;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;font-family:Manrope,Cairo,system-ui,sans-serif;color:var(--txt);
+  background:linear-gradient(160deg,var(--bg2),var(--bg1) 45%,var(--bg2));background-attachment:fixed}
+button{font:inherit;cursor:pointer;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 60px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--pri);display:grid;place-items:center;color:#fff}
+.brand b{font-size:1.08rem;font-weight:800;letter-spacing:-.01em}.brand b span{color:var(--pri)}
+.brand small{display:block;font:500 .62rem 'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--mut);text-transform:uppercase}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:26px}
+.serif{font-family:'Source Serif 4',Georgia,serif;font-weight:700;letter-spacing:-.01em}
+h1{font-size:2rem;margin:20px 0 10px}
+h2{font-size:1.9rem;margin:6px 0 6px}
+.mut{color:var(--mut);line-height:1.6}
+.ic{width:56px;height:56px;border-radius:14px;background:var(--chip);color:var(--pri);display:grid;place-items:center}
+.tag{font:600 .66rem 'JetBrains Mono',monospace;letter-spacing:.08em;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--mut)}
+.lecs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:18px 0 0}
+.lec{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--soft)}
+.lec b{display:block;font-size:.95rem}.lec small{color:var(--mut);font:500 .72rem 'JetBrains Mono',monospace}
+.lec.on{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri) inset}
+.lec:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:22px 0;padding:16px 0;text-align:center}
+.stats small{font:600 .62rem 'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--mut)}
+.stats div b{display:block;font:700 1rem 'JetBrains Mono',monospace;margin-top:6px}
+.btn{border:0;border-radius:99px;padding:13px 24px;font-weight:700;background:var(--pri);color:#fff;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+.btn:hover{background:var(--pri2)}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--txt)}
+.btn.dark{background:var(--txt);color:var(--card)}
+.btn.sm{padding:8px 14px;font-size:.88rem}
+.pill{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:8px 12px;font-size:.9rem;display:inline-flex;gap:6px;align-items:center}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mode{cursor:pointer;margin-bottom:16px;transition:border-color .15s,transform .15s;text-align:left;width:100%}
+.mode:hover{border-color:var(--pri);transform:translateY(-1px)}
+.mode h3{margin:18px 0 4px;font-size:1.25rem}
+.mode ul{list-style:none;padding:14px 0 0;margin:14px 0 0;border-top:1px solid var(--line)}
+.mode li{padding:5px 0;color:var(--mut);font-size:.93rem}.mode li::before{content:"✓";color:var(--ok);margin-right:10px}
+.bar{position:sticky;top:8px;z-index:5;margin-bottom:12px}
+.bar .card{padding:14px 16px}
+.progress{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin:12px 0 18px}
+.progress i{display:block;height:100%;background:var(--pri);width:0;transition:width .25s}
+.q{margin-bottom:16px;scroll-margin-top:120px}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.qnum{font:700 .8rem 'JetBrains Mono',monospace;color:var(--mut)}
+.bm{border:1px solid var(--line);background:transparent;border-radius:8px;padding:5px 10px;font-size:.8rem;color:var(--mut)}
+.bm.on{color:var(--mark);border-color:var(--mark);background:rgba(154,106,47,.08)}
+.qtext{font-size:1.15rem;font-weight:600;line-height:1.55;margin:0 0 16px}
+.opt{width:100%;display:flex;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px;font-size:.98rem}
+.opt:hover{border-color:var(--pri)}
+.opt .k{flex:0 0 28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--soft);display:grid;place-items:center;font:700 .78rem 'JetBrains Mono',monospace}
+.opt .t{flex:1}
+.opt.sel{border-color:var(--pri);background:var(--chip)}.opt.sel .k{background:var(--pri);color:#fff;border-color:var(--pri)}
+.opt.ok{background:var(--okbg);border-color:var(--okln);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--badln);color:var(--bad)}
+.opt.pick{border-color:var(--txt)}
+.opt .mk{font-weight:800}
+.opts.locked .opt{cursor:default}
+.res{text-align:center}
+.big{font:700 4rem 'JetBrains Mono',monospace;line-height:1}.big span{font-size:2rem;color:var(--pri)}
+.scorebox{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:24px;margin:24px 0 18px}
+.hide{display:none!important}
+/* modal + sheet */
+.veil{position:fixed;inset:0;background:rgba(14,19,32,.45);backdrop-filter:blur(3px);z-index:20;display:flex;align-items:center;justify-content:center;padding:20px}
+.dialog{max-width:390px;width:100%}
+.dialog h3{margin:0 0 6px;font-size:1.3rem}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:82vh;background:var(--card);border-radius:20px 20px 0 0;z-index:21;display:flex;flex-direction:column;max-width:760px;margin:0 auto;border:1px solid var(--line)}
+.sheet .top{padding:18px 20px 10px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:8px;overflow:auto;margin-top:12px;padding-bottom:4px}
+.tabs button{border:1px solid var(--line);background:var(--soft);border-radius:99px;padding:5px 12px;font-size:.85rem;white-space:nowrap}
+.tabs button.on{background:var(--txt);color:var(--card);border-color:var(--txt)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px 20px;overflow:auto}
+.grid button{aspect-ratio:1/0.95;border-radius:12px;border:1px solid var(--line);background:var(--soft);font:600 .9rem 'JetBrains Mono',monospace}
+.grid .a{background:var(--pri);color:#fff;border-color:var(--pri)}
+.grid .m{box-shadow:inset 0 -4px 0 var(--mark)}
+.grid .r{background:var(--okbg);color:var(--ok);border-color:var(--okln)}
+.grid .w{background:var(--badbg);color:var(--bad);border-color:var(--badln)}
+.legend{padding:10px 20px 16px;border-top:1px solid var(--line);font:500 .72rem 'JetBrains Mono',monospace;color:var(--mut);display:flex;gap:14px;flex-wrap:wrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.kbd{font:600 .72rem 'JetBrains Mono',monospace;color:var(--mut);text-align:center;margin-top:14px}
+.fb{border-radius:12px;padding:12px 14px;margin-top:6px;font-weight:600}
+.ex{border-left:3px solid var(--pri);background:var(--soft);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.92rem;line-height:1.5}
+.ex b{color:var(--pri)}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.bad{background:var(--badbg);color:var(--bad)}
+@media(max-width:480px){.grid{grid-template-columns:repeat(5,1fr)}h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3zm-6 9.2V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-3.8l-6 3.3-6-3.3z"/></svg></div>
+      <div><b>IS313P<span>Quiz</span></b><small>Exam practice hub</small></div>
+    </div>
+    <button class="iconbtn" id="theme" title="Dark mode" aria-label="Toggle dark mode"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </header>
+
+  <!-- intro -->
+  <section id="v-intro">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6M7 17h8"/></svg></div>
+        <span class="tag">IS313P</span>
+      </div>
+      <h1 class="serif">Database System II Exams</h1>
+      <p class="mut">Choose an exam, then start. After you finish you get your score, your mistakes and an explanation for each question.</p>
+      <div class="lecs" id="lecs" role="radiogroup" aria-label="Choose exam"></div>
+      <div class="stats">
+        <div><small>QUESTIONS</small><b id="s-q"></b></div>
+        <div><small>DURATION</small><b id="s-d"></b></div>
+        <div><small>DIFFICULTY</small><b>Medium</b></div>
+      </div>
+      <div class="row"><button class="btn" id="start">Start Quiz ▷</button></div>
+    </div>
+  </section>
+
+  <!-- mode select -->
+  <section id="v-mode" class="hide">
+    <h2 class="serif">Select Practice Mode</h2>
+    <p class="mut" style="margin:0 0 20px">Choose the workflow that matches your study goals:</p>
+    <button class="card mode" data-mode="quiz">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></div>
+      <h3>Quiz Mode</h3><div class="mut">Standard timed exam simulation</div>
+      <ul><li>Real countdown timer</li><li>Scrollable questions overview</li><li>Final score breakdown at the end</li></ul>
+    </button>
+    <button class="card mode" data-mode="practice">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></div>
+      <h3>Practice Mode</h3><div class="mut">Interactive learning with instant answers</div>
+      <ul><li>No timer pressure</li><li>One question at a time</li><li>Instant answer check &amp; shortcuts</li><li>Shuffled questions &amp; options</li></ul>
+    </button>
+    <button class="btn ghost" id="back">← Back</button>
+  </section>
+
+  <!-- quiz / review (all questions, scrollable) -->
+  <section id="v-quiz" class="hide">
+    <div class="bar"><div class="card">
+      <div class="row" id="quiz-tools">
+        <span class="pill hide" id="rv-tag" style="background:var(--chip);color:var(--pri);border-color:transparent">✎ Review Mode</span>
+        <b id="rv-score" class="hide" style="font-family:'JetBrains Mono',monospace;font-size:.9rem"></b>
+        <button class="pill" data-index>☰ Index</button>
+        <span class="pill" id="timer" style="font-family:'JetBrains Mono',monospace;font-weight:700"></span>
+        <button class="btn sm" id="submit">Submit Exam ⚑</button>
+        <button class="pill hide" id="rv-wrong"></button>
+        <button class="btn dark sm hide" id="exit-rv">← Exit Review</button>
+      </div>
+    </div></div>
+    <div class="progress"><i id="q-prog"></i></div>
+    <div id="qlist"></div>
+  </section>
+
+  <!-- practice (one at a time) -->
+  <section id="v-practice" class="hide">
+    <div class="bar"><div class="card">
+      <div class="row" style="justify-content:space-between">
+        <span class="pill" style="font-family:'JetBrains Mono',monospace"><span id="p-pos"></span></span>
+        <div class="row">
+          <span class="pill" style="font-family:'JetBrains Mono',monospace" id="p-score"></span>
+          <button class="pill" data-index>☰ Index</button>
+          <button class="btn sm" id="p-finish">Finish</button>
+        </div>
+      </div>
+    </div></div>
+    <div class="progress"><i id="p-prog"></i></div>
+    <div id="p-card"></div>
+    <div class="row" style="justify-content:space-between;margin-top:14px">
+      <button class="btn ghost" id="p-prev">← Previous</button>
+      <button class="btn" id="p-next">Next →</button>
+    </div>
+    <div class="kbd">Shortcuts: 1–5 / A–E choose · Enter / → next · ← previous · B bookmark</div>
+  </section>
+
+  <!-- result -->
+  <section id="v-result" class="hide">
+    <div class="card res">
+      <div class="ic" id="r-ic" style="margin:8px auto 16px;width:78px;height:78px;border-radius:20px"></div>
+      <h2 class="serif" id="r-title"></h2>
+      <p class="mut" id="r-sub" style="margin:0"></p>
+      <div class="scorebox">
+        <div class="big"><b id="r-pct"></b><span>%</span></div>
+        <p class="mut" style="margin:12px 0 0">You scored <b id="r-ok"></b> out of <b id="r-n"></b> questions</p>
+      </div>
+      <div class="progress" style="margin:0 0 24px"><i id="r-bar"></i></div>
+      <div class="row" style="justify-content:center"><button class="btn" id="r-wrong">Review My Mistakes ✕</button><button class="btn ghost" id="r-review">Review All Answers ✎</button></div>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button class="btn" id="r-retake">Retake Quiz ↻</button>
+        <button class="btn ghost" id="r-home">Back to Start</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- confirm dialog -->
+<div class="veil hide" id="confirm"><div class="card dialog">
+  <div class="row" style="align-items:flex-start;flex-wrap:nowrap">
+    <div class="ic" style="width:44px;height:44px;flex:0 0 44px">⚑</div>
+    <div><h3 class="serif">Finish this exam?</h3><p class="mut" id="c-msg" style="margin:0"></p></div>
+  </div>
+  <button class="btn" id="c-yes" style="width:100%;margin-top:22px">Finish exam</button>
+  <button class="btn ghost" id="c-no" style="width:100%;margin-top:10px;border-color:var(--line);background:var(--soft)">Keep working</button>
+</div></div>
+
+<!-- index sheet -->
+<div class="veil hide" id="idx-veil"></div>
+<div class="sheet hide" id="idx">
+  <div class="top">
+    <div class="row" style="justify-content:space-between">
+      <div><b class="serif" style="font-size:1.2rem">Question Index</b><div class="mut" id="i-sum" style="font:500 .78rem 'JetBrains Mono',monospace"></div></div>
+      <button class="iconbtn" id="i-close" aria-label="Close">✕</button>
+    </div>
+    <div class="tabs" id="i-tabs"></div>
+  </div>
+  <div class="grid" id="i-grid"></div>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--pri)"></i>Answered</span>
+    <span><i class="dot" style="background:var(--line)"></i>Unanswered</span>
+    <span><i class="dot" style="background:var(--mark)"></i>Bookmarked</span>
+    <span>Click any number to jump</span>
+  </div>
+</div>
+
+<script>
+const BANK = [[1,"In a recovery system, what does \"Undo/Redo\" recovery imply?",["All transactions are redone ﬁrst, and then uncommitted transactions are undone.","Only redo operations are necessary for recovery.","Transactions are immediately written to disk without logging.","Undo operations are applied to active transactions, while redo operations are applied to committed ones."],3,"Undo/Redo: uncommitted (active) transactions are undone with BFIM, committed ones are redone with AFIM."],[1,"What does a “cascade less schedule” ensure?",["Transactions read only items written by committed transactions.","All transactions are executed in a single-user mode.","Transactions execute without any interleaving.","Every transaction commits in the order it started."],0,"A cascadeless schedule lets transactions read only values written by committed transactions, so no cascading rollback is needed."],[1,"In MAC, if a subject S from class C tries to read an object O from class TS, what will happen?",["The operation will be Redone","The operation will be rolled back","The operation will be rejected","The operation will be accepted"],2,"MAC simple security property (no read-up): S can read O only if class(S) ≥ class(O). C < TS, so the read is rejected."],[1,"What is the main advantage of using the two-phase locking protocol?",["Reduces disk I/O operations","Enhances transaction speed","Prevents all database crashes","Guarantees serializability of transactions"],3,"2PL guarantees conflict serializability: all locks are acquired (growing phase) before any lock is released (shrinking phase)."],[1,"What does data integrity in a database refer to?",["Encrypting the database for security","Ensuring the accuracy and correctness of the data","Protecting the data from unauthorized access","Monitoring the performance of the database"],1,"Data integrity means the accuracy and correctness (validity) of the stored data."],[1,"In which type of two-phase locking does a transaction not release any of its locks until it commits or aborts?",["Basic","Strict","Conservative","Rigorous"],3,"Rigorous 2PL keeps ALL locks (shared and exclusive) until commit or abort. Strict 2PL keeps only the exclusive (write) locks."],[1,"Which of the following is an example of an “incorrect summary problem”?",["A transaction’s changes are overwritten by another transaction.","A transaction reads a value that another transaction has not yet committed.","Two transactions write to the same data item at the same time.","An aggregate function reads a mix of updated and non-updated values."],3,"Incorrect summary: an aggregate (e.g. SUM) reads some items before and some after another transaction updates them."],[1,"According to the wait-die algorithm, if an older transaction T requests a lock on an item held by a younger transaction S, what will occur?",["T will wait.","S will wait.","S will rollback.","T will rollback."],0,"Wait-die: an older transaction is allowed to wait for a younger one; a younger requester dies (rolls back). T is older, so T waits."],[1,"Conﬂict serializability can be tested by constructing……",["Precedence graph","Histogram","Wait-for-graph","Gantt chart"],0,"Conflict serializability is tested with a precedence (serialization) graph: no cycle = conflict serializable."],[1,"In a deadlock detection approach using a wait-for graph, what indicates a deadlock?",["The graph has more edges than nodes.","A transaction holds no locks.","Many transactions are waiting.","A cycle exists in the graph."],3,"In a wait-for graph, a cycle means each transaction waits for another in the cycle: a deadlock."],[1,"If privilege is revoked from user A, who has granted it to user B with the GRANT option, what will happen?",["Privilege will be revoked from user A, and the revoke will cascade to user B.","Privilege will be revoked from user B only.","Privilege will be revoked from user A only.","The operation will be rejected."],0,"Revoking from A cascades: privileges that B received through A (via GRANT OPTION) are revoked automatically too."],[1,"If a transaction T is rolled back, any transaction S that has read the value of item X written by T must be ——",["reject","continue","rolled back","wait"],2,"S read a dirty value written by T, so when T is rolled back S must also be rolled back (cascading rollback)."],[1,"…… is one of the DBMS functions, which allows shared access of the database",["integrity","query processing","recovery","concurrency control"],3,"Concurrency control is the DBMS function that allows many users to share the database at the same time correctly."],[1,"Which integrity constraint ensures that no primary key can have a NULL value?",["Key constraint","Domain constraint","Referential integrity","Entity integrity"],3,"Entity integrity: no primary key value can be NULL (the PK identifies each tuple)."],[1,"If a transaction T needs to upgrade its read lock on item X and another transaction S holds a read lock on item X, what will happen?",["operation will reject","T will rollback","T will wait","T will upgrade its lock"],2,"Another transaction S also holds a read lock on X, so T cannot get an exclusive lock yet and must wait until S releases it."],[1,"Which of the following constraints cannot be expressed directly in a schema?",["Domain constraints","Key constraints","Application-based constraints","Referential integrity"],2,"Application-based (semantic) constraints cannot be stated in the schema; they are checked by application programs."],[1,"Which of the following is a disadvantage of the ﬁle system?",["data independent","multiple users can access data at the same time","data redundancy","allowing multilevel security"],2,"Data redundancy (the same data duplicated in several files) is a classic file-system disadvantage. The other options are DBMS advantages."],[1,"What is the primary goal of database security?",["Ensuring transaction atomicity","Enhancing query performance","Preventing unauthorized access to data","Eliminating data redundancy"],2,"The primary goal of database security is protecting data from unauthorized access, modification or destruction."],[1,"Why is a checkpoint used in recovery mechanisms?",["To terminate long-running transactions automatically","To reduce the time needed for recovery by identifying a recent consistent state","To prioritize redo operations over undo operations","To remove old log entries and reduce storage usage"],1,"A checkpoint marks a point where all updates were flushed to disk, so recovery only scans the log after it: faster recovery."],[1,"In the context of recovery techniques, what does the Write-Ahead Logging (WAL) protocol ensure?",["Redo operations are skipped entirely","The before image is logged before data is written to the database","Data is directly written to the database without logging","Log entries are written only after the transaction commits"],1,"WAL: the before image (BFIM) is written to the log on stable storage before the data item is overwritten on disk."],[2,"________ means transaction shouldn't make its updates visible to other transactions until it is committed.",["consistency","isolation","durability","atomicity"],1,"Isolation ensures that concurrent transactions execute independently without exposing uncommitted intermediate updates to other transactions."],[2,"Steal / Force approach is also referred to as ________ approach.",["Undo / Redo","No Undo / Redo","Undo / No-Redo","No Undo / No-Redo"],2,"Steal requires Undo (uncommitted pages may reach disk). Force writes all pages to disk at commit, meaning No-Redo is needed. (Note: Steal / No-Force corresponds to a) Undo/Redo)."],[2,"Transaction Ti needs to be ________ if the log contains the records <Ti, start> only.",["redone","undone","wait","Rollback"],1,"Because there is no <Ti, commit> record, the transaction was active at the time of failure and its effects must be undone."],[2,"If a transaction fails after updating the database, but before the transaction commits then it will need to ________.",["Redo","undo","wait","ignore"],1,"Any updates made by an uncommitted transaction prior to a failure must be reversed (undone) using Before Images (BFIM)."],[2,"________ means transaction is an atomic unit of processing.",["Atomicity","Consistency","Durability","Isolation"],0,"Atomicity enforces the \"all-or-nothing\" rule: either all operations of a transaction execute completely or none do."],[2,"________ is a logical unit of database processing that includes one or more access/update operations.",["Operations","Transactions","Table","Relation"],1,"By definition, a database transaction is a logical unit of work comprising read and write operations."],[2,"If we use UNDO/REDO, transactions that have <T, commit> before the checkpoint record in the log will be ________.",["redone","undone","wait","ignored"],3,"At a checkpoint, all dirty buffers are flushed to disk. Transactions committed before the checkpoint are already safely stored on disk and are ignored during recovery."],[2,"If we use NO-UNDO/REDO algorithm to recover from system failure, the log must contain ________.",["AFIM","BFIM","AFIM and BFIM","neither all"],0,"NO-UNDO/REDO (Deferred Update) never writes uncommitted data to disk (no BFIM needed), and uses After Images (AFIM) to redo committed transactions."],[2,"If we apply wound-wait algorithm and an older transaction T needs an item locked by a younger transaction S then ________.",["T will wait","T will rollback","S will wait","S will rollback"],3,"Wound-Wait is preemptive: an older transaction T \"wounds\" a younger transaction S, forcing S to abort and rollback."],[2,"________ is one of the DBMS functions, which allows shared access of the database.",["Integrity","Concurrency control","Recovery","Query processing"],1,"Concurrency control coordinates simultaneous multi-user access to shared data while preserving consistency."],[2,"A schedule S is ________ if it contains transactions executed one by one.",["serializable","serial","recoverable","cascade-less"],1,"In a serial schedule, transactions execute sequentially from start to finish without any interleaving."],[2,"Schedule can be tested against conflict serializability by constructing ________.",["Histogram","wait-for-graph","Gantt chart","Precedence graph"],3,"A Precedence (Serialization) Graph models conflicting operations; if it contains no cycles, the schedule is conflict serializable."],[2,"________ problem occurs when a particular transaction consistently waits or is restarted and never gets the chance to proceed further.",["Deadlock","Dirty read","Starvation","Lost update"],2,"Starvation (livelock) happens when a transaction is repeatedly denied resources or repeatedly rolled back without ever completing."],[2,"A transaction that already holds a read lock on item X is allowed under certain conditions to convert the read lock to write lock; this is referred to as ________.",["lock shrinking","lock downgrade","Lock upgrade","lock expanding"],2,"Converting a shared (read) lock into an exclusive (write) lock during the growing phase is called a lock upgrade."],[2,"If a transaction T needs to write an item x where read_TS(x) > TS(T), then ________.",["T will read the item x","T will wait","T will rollback","x will be locked"],2,"In Timestamp Ordering, if a younger transaction has already read x (read_TS(x) > TS(T)), T's write arrives too late and T must rollback."],[2,"In ________ two-phase locking, deadlocks are not allowed to happen.",["Basic","conservative","strict","Time stamp"],1,"Conservative (Static) 2PL requires a transaction to pre-declare and lock all needed items before starting, preventing deadlocks entirely."],[2,"Strict two-phase locking protocol permits releasing write locks of transaction ________.",["at the beginning","during execution","at the end","Never in the lifetime"],2,"Strict 2PL holds all exclusive (write) locks until the transaction commits or aborts (at the end of execution)."],[2,"Schedule can be tested against conflict serializability by constructing ________.",["Histogram","wait-for-graph","Gantt chart","precedence graph"],3,"Same as Q12: Conflict serializability is tested by checking if the precedence graph is acyclic."],[2,"Two modes of locking a data item are termed as shared and ________ lock.",["Composite","Compatible","Exclusive","Linear"],2,"Standard binary/read-write locking provides two modes: Shared (Read) locks and Exclusive (Write) locks."],[2,"In ________ two-phase locking, a transaction locks all data items it refers to before it begins execution.",["Basic","Conservative","Strict","rigorous"],1,"Conservative 2PL acquires all locks upfront before execution begins; if any item is unavailable, none are locked."],[2,"The wait-for graph is used to detect ________.",["the recovery","the serializability","the dead lock","the integrity problem violation"],2,"A cycle in a Wait-For Graph (WFG) directly indicates a deadlock among active transactions."],[2,"If we apply wait-die algorithm and an older transaction T needs an item locked by younger transaction S then ________.",["T will wait","T will rollback","S will wait","S will rollback"],0,"In Wait-Die (non-preemptive), an older transaction requesting a lock held by a younger transaction waits (only a younger transaction dies/rolls back)."],[2,"If transaction T has a ________ lock on item X, it means T can only read item X.",["Composite","Shared","Exclusive","Linear"],1,"A Shared lock grants read-only access and allows multiple transactions to read X concurrently."],[2,"If transaction T needs to write an item x where write_TS(x) ≤ TS(T) and read_TS(x) ≤ TS(T), then ________.",["T will write the item","T will wait","T will rollback","X will be locked"],0,"Neither a younger read nor a younger write has occurred on x, so T's write operation is valid and proceeds, updating write_TS(x) = TS(T)."],[2,"If transaction T needs to hold a read lock on an item that already has a write lock, then ________.",["T will wait","T will rollback","T will hold the lock","operation will reject"],0,"Read locks conflict with existing Write locks, so T is blocked and must wait until the write lock is released."],[2,"If transaction T needs to upgrade its read lock on item x and another transaction S holds a read lock on item x, then ________.",["T will wait","T will rollback","T will upgrade its lock","operation will reject"],0,"Upgrading to an exclusive lock requires T to be the sole lock holder; because S also holds a read lock on x, T must wait."],[2,"If a transaction T is rolled back, any transaction S that has read the value of some data item X written by T must be ________.",["Rolled back","Wait","Reject","Continue"],0,"This is a Cascading Rollback: S read uncommitted (dirty) data from T, so S must also be rolled back to maintain consistency."],[2,"A logical error in the program that is accessing the database, which causes one or more transactions to fail, is known as ________.",["application software errors","user fault","media failure","system crash"],0,"Logical bugs (e.g., division by zero, bad parameters) in application code cause transaction- level failures known as application software errors."],[2,"If ________ update is used, there is no need for the system log file.",["in-place","immediate","deferred","Shadow (Shadow Paging)"],3,"Shadow Paging maintains two page tables (current and shadow) and requires no log file in single-user environments (Deferred update still requires a log for REDO)."],[2,"Steal / Force approach is also referred to as ________ approach.",["Undo / Redo","No Undo / Redo","Undo / No-Redo","No Undo / No-Redo"],2,"Steal requires Undo; Force writes all pages at commit so No-Redo is needed. (Note: Steal / No-Force = Undo/Redo)."],[2,"________ system restores the database to a previous consistent state following a hardware or software failure.",["A concurrency","A security","A recovery","An integrity control"],2,"The DBMS recovery subsystem ensures atomicity and durability by restoring the database to a consistent state after crashes."],[2,"If we use NO-UNDO/REDO algorithm to recover from system failure, the log must contain ________.",["AFIM","BFIM","AFIM and BFIM","neither all"],0,"Same as Q8: Deferred update (NO-UNDO/REDO) only needs After Images (AFIM) to redo committed transactions."],[2,"If we use UNDO/REDO, transactions that have <T, commit> before the checkpoint record in the log will be ________.",["redone","undone","wait","ignored"],3,"Transactions committed prior to the checkpoint already have their modifications persisted on disk, so they are ignored during recovery."],[2,"The mechanisms for ensuring Authorization include ________.",["Biometrics","access controls","Encryption","recovery control"],1,"Authorization is enforced through Access Control models (DAC, MAC, RBAC). Biometrics is for Authentication; Encryption is for Confidentiality."],[2,"________ refers to the process of determining what a user can do.",["Authentication","Authorization","Confidentiality","Integrity"],1,"Authentication verifies who the user is; Authorization determines what actions the user is permitted to perform."],[2,"________ is characterized by a high degree of flexibility, which makes it suitable for a large variety of applications.",["DAC","MAC","RBAC","OAC"],0,"Discretionary Access Control (DAC) offers high flexibility via GRANT/REVOKE privileges, whereas MAC is rigid."],[2,"Confidentiality is one of the ________.",["Security pillars","access controls","rules","technical controls"],0,"The database security pillars are Authentication & Authorization, Confidentiality, Integrity, and Availability (CIA)."],[2,"In MAC, a subject S from class C tries to read an object O from class TS. Then the operation will be ________.",["accept","rejected","rollback","Redo"],1,"Bell-LaPadula Simple Security Property (\"No Read Up\"): class(S) ≥ class(O) is required. Since C < TS, reading is rejected."],[2,"________ is the set of allowable values for one or more attributes.",["Null","key","domain","constraints"],2,"A domain dom(A) defines the valid data types and allowable atomic values for an attribute A."],[2,"If an insertion operation violates one or more constraints, the default is to ________ the operation.",["cascade","reject","accept","set default"],1,"When an INSERT violates domain, key, entity, or referential integrity constraints, the default DBMS action is to reject the insertion."],[2,"No primary key value can be NULL; this is a ________ constraint.",["referential integrity","entity integrity","trigger","Semantic integrity"],1,"Entity integrity states that primary key attributes uniquely identify every tuple and therefore cannot contain NULL values."],[2,"Referential integrity constraints are specified between two ________.",["relations","databases","tuples","attributes"],0,"Referential integrity maintains consistency between tuples across two relations using Foreign Keys referencing Primary Keys."],[2,"If the user deletes a tuple containing a PK which is referred to by an FK, then the DBMS can decide to do one of the following EXCEPT ________.",["execute it","reject it","Set Default","Cascade delete"],0,"Simply executing the delete blindly would violate referential integrity; valid options are Restrict (reject), Cascade, Set Null, or Set Default."],[2,"Views may assist with security policy implementation.",["True","False"],0,"Views hide sensitive columns or rows and allow owners to grant SELECT privileges only on restricted subsets of data."],[2,"________ means prevention of unauthorized or improper modification of data.",["Authentication","Authorization","Confidentiality","Integrity"],3,"Data integrity protects information from improper, unauthorized, or accidental modification."],[2,"It occurs during both initial login and each time a user attempts to use a database for the first time during a session: ________.",["Authentication","Authorization","Confidentiality","Integrity"],0,"Authentication verifies user identity upon initial login and first database access within a session."],[2,"The types of security controls that need to be implemented for a successful security policy are the following EXCEPT ________.",["Access control","Administrative controls","Technical controls","physical controls"],0,"The three types of security controls are Administrative, Technical, and Physical controls; Access control is a mechanism under Technical controls."],[2,"Database ________ refers to the accuracy or correctness of the data in database.",["Security","Privacy","Integrity","Confidentiality"],2,"Data Integrity ensures that data stored in the database remains accurate, valid, and consistent."],[2,"In MAC, a subject S from class C tries to read an object O from class C. Then the operation will be ________.",["Accept","Rejected","Rollback","Redo"],0,"Under the Simple Security Property, class(S) ≥ class(O) is satisfied because C ≥ C, so the read operation is accepted."],[2,"If an insertion operation violates one or more constraints, the default is to ________ the operation.",["Cascade","Reject","Accept","Set default"],1,"Same as Q40: Constraint violations during INSERT are rejected by default."],[2,"Which ACID property ensures that transactions are processed reliably?",["Atomicity","Consistency","Durability","Isolation"],2,"Durability guarantees that once a transaction commits, its changes are permanently recorded and survive crashes."],[2,"The lost update problem occurs when ________.",["Two transactions read the same data","Two transactions update the same data concurrently","A transaction reads uncommitted data","A transaction fails to commit"],1,"When two concurrent transactions read and update the same item without isolation, the second write overwrites and erases the first update."],[2,"In timestamp ordering protocol, if read_TS(X) > TS(T) then ________.",["Transaction T proceeds","Transaction T is rolled back","Transaction T waits","Transaction T is restarted"],1,"Same as Q15: When T attempts to write X after a younger transaction has already read X, T violates timestamp order and is rolled back."],[2,"Which recovery technique uses both undo and redo operations?",["Deferred update","Immediate update","Shadow paging","Checkpointing"],1,"Immediate update allows uncommitted changes to reach disk (requiring UNDO) and may have committed changes still in buffers at crash (requiring REDO)."],[2,"A schedule is conflict serializable if ________.",["It is equivalent to some serial schedule","It has no conflicting operations","Its precedence graph is acyclic","It satisfies two-phase locking"],2,"A schedule is conflict serializable if and only if its precedence graph contains no cycles (is acyclic)."],[2,"The phantom problem occurs when ________.",["New tuples are inserted by other transactions","Existing tuples are deleted","Tuples are updated concurrently","Deadlock occurs between transactions"],0,"A phantom read occurs when a transaction re-executes a range query and sees newly inserted tuples committed by another concurrent transaction."],[2,"In strict two-phase locking, locks are released ________.",["Immediately after use","After transaction commits","When no longer needed","At the end of each operation"],1,"Strict 2PL holds all exclusive locks until the transaction reaches its commit (or abort) point."],[2,"Which concurrency control protocol uses timestamps?",["Two-phase locking","Timestamp ordering","Validation based","Multiple granularity"],1,"Timestamp ordering assigns unique monotonically increasing timestamps to transactions to serialize conflicting operations without locks."],[2,"A dirty read occurs when ________.",["A transaction reads data written by an uncommitted transaction","Two transactions read the same data","A transaction reads outdated data","Data is lost during transaction"],0,"A dirty read happens when T2 reads an item modified by T1 before T1 commits or aborts."],[2,"The system log in recovery contains ________.",["Transaction operations and states","Database schema","User authentication data","Network configuration"],0,"The recovery log records transaction lifecycle events (start, read, write with BFIM/AFIM, commit, abort) and checkpoints."],[3,"Duplication of information in different files leads to:",["Security problems","Data redundancy and inconsistency","Atomicity of updates","Data isolation"],1,"Storing the same data in several files causes redundancy, and copies that disagree cause inconsistency."],[3,"The need to write a new program for each new task is a problem of:",["Difficulty in accessing data","Integrity problems","Concurrent access","Security problems"],0,"In a file system each new task needs a new program written to extract the data: difficulty in accessing data."],[3,"Integrity constraints (e.g., account balance > 0) become \"buried\" in program code. This is:",["Data redundancy","Atomicity","Integrity problems","Data isolation"],2,"Constraints hidden inside program code are hard to add or change: integrity problems."],[3,"A transfer of funds from one account to another should either complete or not happen at all. This property is:",["Concurrency","Security","Isolation","Atomicity of updates"],3,"All-or-nothing execution of an update (like a funds transfer) is atomicity of updates."],[3,"Two people read a balance of 100 and each withdraws 50 at the same time. This problem is caused by:",["Uncontrolled concurrent access","Data redundancy","Difficulty in accessing data","Security problems"],0,"Both read 100 and both write 50, so one withdrawal is lost: uncontrolled concurrent access."],[3,"Difficulty in giving a user access to some, but not all, data is a problem of:",["Data isolation","Atomicity","Security problems","Integrity problems"],2,"Giving a user access to only part of the data is hard in file systems: a security problem."],[3,"\"Multiple files and formats\" describes which drawback of file systems?",["Data isolation","Atomicity of updates","Security problems","Concurrent access"],0,"Data scattered in multiple files and formats is data isolation: it is hard to write programs that read all of it."],[3,"In the early days, database applications were built on top of:",["Cloud systems","NoSQL databases","Object-oriented DBMSs","File systems"],3,"Before DBMSs, database applications were built directly on top of file systems."],[3,"Which of the following is NOT one of the course's main topics?",["Concurrency Control","Database Recovery","Data Warehousing","Query Processing and Optimization"],2,"Data warehousing is not one of the course topics; concurrency, recovery and query processing are."],[3,"What is the first main topic of the course (the \"Next\" topic)?",["Database Security","Introduction to Transaction Processing Concepts","Introduction to NoSQL Databases","The Relational Algebra"],1,"The first main topic after the introduction is Introduction to Transaction Processing Concepts."],[3,"Which of the following is a recommended textbook for the course?",["Elmasri & Navathe, \"Fundamentals of Database Systems\", 6th ed.","Silberschatz, \"Operating System Concepts\"","Tanenbaum, \"Computer Networks\"","Knuth, \"The Art of Computer Programming\""],0,"The course textbook is Elmasri & Navathe, Fundamentals of Database Systems."],[3,"Two transactions access the same item and their operations are interleaved, making the value incorrect. This is:",["Dirty read","Lost update","Incorrect summary","Unrepeatable read"],1,"Interleaved operations on the same item where one update overwrites the other give a lost update."],[3,"The schedule S: r1(x), w1(x), r2(x), w2(x), A1, C2 causes ........ problem",["Lost update","Dirty read","Incorrect summary","Unrepeatable read"],1,"T2 reads and writes x written by T1, and T1 then aborts (A1): T2 used a dirty value. Dirty read."],[3,"One transaction calculates an aggregate (sum) while others update some of the items. This is:",["Lost update","Dirty read","Incorrect summary","Unrepeatable read"],2,"An aggregate computed while other transactions update some of the items gives an incorrect summary."],[3,"Transaction T reads the same item twice and gets different values because another transaction changed it between the reads. This is:",["Unrepeatable read","Lost update","Dirty read","Incorrect summary"],0,"Reading the same item twice and getting different values is an unrepeatable read."],[3,"ACID properties refer to all the following EXCEPT:",["Atomicity","Consistency","Integrity","Durability"],2,"ACID = Atomicity, Consistency, Isolation, Durability. Integrity is not one of them."],[3,"A transaction should not make its updates visible to other transactions until it is committed. This property is:",["Atomicity","Consistency","Isolation","Durability"],2,"Isolation: a transaction hides its updates from others until it commits."],[3,"Which pair of operations is in CONFLICT?",["r1(X) and r2(X)","r2(X) and w1(X)","w2(X) and w1(Y)","r1(X) and r1(Y)"],1,"Two operations conflict if they belong to different transactions, access the same item and at least one is a write: r2(X) and w1(X)."],[3,"A schedule is conflict serializable if and only if its precedence graph:",["Has cycles","Has no cycles","Has only one node","Has undirected edges"],1,"A schedule is conflict serializable if and only if its precedence graph has no cycles."],[3,"The schedule S: r1(x), r2(y), w1(x), r2(y), r2(x), w2(y), C2, C1 is ........",["Recoverable","Unrecoverable","Cascadeless","Strict"],1,"T2 reads x after T1 writes it, then T2 commits before T1 commits. If T1 aborts, T2 cannot be undone: unrecoverable."],[3,"The schedule S: r1(x), r2(y), r3(z), r2(z), w1(x), w2(y), w3(z), w2(z) is ........",["Serial","Strict","Conflict serializable","Not conflict serializable"],3,"r2(z) before w3(z) gives T2→T3, and w3(z) before w2(z) gives T3→T2. The cycle means it is not conflict serializable."],[3,"Which statement about view and conflict serializability is correct?",["Any view serializable schedule is conflict serializable","Any conflict serializable schedule is also view serializable, but not vice versa","They are always identical","View serializability is stricter than conflict serializability"],1,"Every conflict serializable schedule is view serializable, but some view serializable schedules (blind writes) are not conflict serializable."],[3,"Which technique assumes that conflicts WILL happen and resolves them using locking?",["Optimistic concurrency control","Pessimistic concurrency control","Timestamp ordering","Multiversion control"],1,"Pessimistic concurrency control expects conflicts, so it locks items before using them."],[3,"A binary lock can have how many states?",["Three: read-locked, write-locked, unlocked","Two: locked (1) and unlocked (0)","Four","One"],1,"A binary lock has two states: locked (1) and unlocked (0)."],[3,"In shared/exclusive locking, a read-locked item is also called:",["Exclusive-locked","Share-locked","Binary-locked","Write-locked"],1,"A read lock is shared: many transactions can hold it together, so the item is share-locked."],[3,"A transaction holds a read lock on X and issues write_lock(X). The lock can be upgraded only if:",["Any other transaction holds a read lock","It is the only transaction holding a read lock on X","Another transaction holds a write lock","The transaction has committed"],1,"Upgrading read to write is allowed only if T is the only transaction holding a read lock on X."],[3,"In Two-Phase Locking, the two phases are:",["Reading and writing","Growing (locking) and Shrinking (unlocking)","Commit and abort","Prepare and commit"],1,"2PL has a growing phase (acquire locks, release none) then a shrinking phase (release locks, acquire none)."],[3,"Which 2PL variant prevents deadlock by locking all desired items BEFORE the transaction begins?",["Basic","Strict","Conservative","Rigorous"],2,"Conservative (static) 2PL locks every needed item before the transaction starts, so deadlock cannot happen."],[3,"Deadlock occurs when:",["A transaction never gets a chance to proceed because it is repeatedly restarted","Each transaction in a set is waiting for an item locked by another transaction in the set","A transaction commits twice","The log is full"],1,"Deadlock: every transaction in a set waits for an item locked by another transaction in the same set."],[3,"In the WAIT-DIE scheme, if TS(Ti) < TS(Tj) (Ti is older), then:",["Ti dies","Ti is allowed to wait","Tj is wounded","Both abort"],1,"Wait-die: if Ti is older (smaller timestamp) it is allowed to wait; a younger requester dies."],[3,"Starvation occurs when:",["Two transactions wait for each other forever","A transaction consistently waits or is restarted and never gets a chance to proceed","The lock table is empty","A transaction commits successfully"],1,"Starvation: a transaction keeps waiting or keeps being restarted and never proceeds."],[3,"In Basic Timestamp Ordering, transaction T issues write_item(X) and read_TS(X) > TS(T). What happens?",["T executes and write_TS(X) = TS(T)","T is delayed","T is aborted and rolled back","read_TS(X) is reset"],2,"A younger transaction already read X (read_TS(X) > TS(T)), so T writing now would be out of order: T is aborted and rolled back."],[3,"What is the difference between Strict TO and Basic TO when a conflict occurs?",["Strict TO aborts the transaction, Basic TO delays it","Strict TO delays T until the transaction that wrote/read X terminates (commits or aborts)","They are identical","Strict TO uses locks only"],1,"Strict TO delays T until the transaction that wrote/read X commits or aborts, instead of reading or writing dirty values."],[3,"WAL stands for:",["Wall-ahead logging","Wall-ahead language","Write-ahead language","Write-ahead logging"],3,"WAL = Write-Ahead Logging: log first, then write the data to disk."],[3,"Steal/No-Force approach is also referred to as:",["Undo/Redo","No Undo/Redo","Undo/No Redo","No Undo/No Redo"],0,"Steal needs UNDO (uncommitted pages may reach disk); No-Force needs REDO (committed pages may not be on disk yet): Undo/Redo."],[3,"Steal/Force approach is also referred to as:",["Undo/Redo","No Undo/Redo","Undo/No Redo","No Undo/No Redo"],2,"Steal needs UNDO; Force writes every page at commit so no REDO is needed: Undo/No-Redo."],[3,"In ........ approach, a cache page updated by a transaction can be written to disk before the transaction commits.",["Steal","Shadow","No steal","Deferred"],0,"Steal: a buffer page changed by an uncommitted transaction may be written to disk before commit."],[3,"In ........ update, the modified version of a data item does not overwrite its disk copy but is written at a separate disk location.",["In-place","Immediate","Shadow","Deferred"],2,"Shadow update writes the new version at a different disk location and keeps the old (shadow) copy."],[3,"If ........ update is used, there is no need for the system log file.",["In-place","Immediate","Deferred","Shadow"],3,"Shadow paging keeps the old page table as a backup, so it does not need a log for recovery."],[3,"For transactions that have [start] and [commit] BEFORE the last checkpoint record in the log, the transaction is:",["Ignored","Undone","Redone","Restarted"],0,"Their changes were already flushed to disk at the checkpoint, so recovery ignores them."],[3,"In deferred update, the recovery algorithm is:",["UNDO/REDO","UNDO/NO-REDO","NO-UNDO/REDO","NO-UNDO/NO-REDO"],2,"Deferred update writes to disk only after commit: no UNDO is needed, only REDO. NO-UNDO/REDO."],[3,"According to WAL, for UNDO purposes, before a data item's AFIM is flushed to disk:",["The AFIM must be deleted","Its BFIM must be written to the log and the log saved on stable storage","The transaction must commit","A checkpoint must be taken"],1,"WAL for UNDO: the BFIM must be in the log on stable storage before the AFIM overwrites the item on disk."],[3,"Transaction T1 (younger) waits for a lock held by T2 (older), and T2 waits for a lock held by T1. Under the \"wound-wait\" scheme, what is the outcome?",["T1 is aborted (wounded)","T2 is aborted (wounded)","T1 is allowed to wait","The system stays in deadlock until timeout"],0,"Wound-wait: when older T2 requests an item held by younger T1, T2 wounds T1, so T1 is aborted."],[3,"A precedence graph of schedule S contains a cycle T1 → T2 → T3 → T1. What can be concluded?",["It is conflict serializable","It is view serializable","It is not conflict serializable","It is recoverable"],2,"A cycle in the precedence graph means the schedule is not conflict serializable."],[3,"The process of identifying a user is called:",["Authorization","Authentication","Confidentiality","Availability"],1,"Identifying who the user is = authentication. Deciding what they may do = authorization."],[3,"Preventing unauthorized or improper modification of data is the pillar of:",["Confidentiality","Availability","Integrity","Authentication"],2,"Integrity is the pillar that prevents unauthorized or improper modification of data."],[3,"A database log used mainly for security purposes is called:",["Audit trail","Redo log","Checkpoint","Lock table"],0,"A log kept mainly for security (who did what) is called an audit trail."],[3,"Which of the following is NOT a type of security control?",["Administrative","Technical","Physical","Mandatory"],3,"Security controls are administrative, technical and physical. Mandatory is an access-control model, not a control type."],[3,"What does GRANT ... WITH GRANT OPTION allow the receiving account to do?",["Delete the relation","Propagate (grant) the same privilege to other accounts","Become the owner of the relation","Revoke privileges from the owner"],1,"WITH GRANT OPTION lets the receiver grant the same privilege on to other accounts."],[3,"A1 grants SELECT on EMPLOYEE to A3 (with grant option), A3 grants it to A4, then A1 revokes it from A3. What happens to A4?",["A4 keeps the privilege","A4's privilege is automatically revoked too","A4 becomes the owner","Nothing, the DBA must revoke it manually"],1,"Revoking from A3 cascades: privileges A3 passed on (to A4) are revoked automatically."],[3,"Which SQL command correctly lets A4 update ONLY the SALARY attribute of EMPLOYEE?",["GRANT UPDATE ON EMPLOYEE TO A4;","GRANT UPDATE ON EMPLOYEE (SALARY) TO A4;","GRANT SELECT ON EMPLOYEE (SALARY) TO A4;","GRANT MODIFY ON SALARY TO A4;"],1,"Listing the column in GRANT UPDATE ON EMPLOYEE (SALARY) limits the update privilege to that attribute."],[3,"In the Bell-LaPadula model, the \"simple security property\" states that a subject S can read object O only if:",["class(S) ≤ class(O)","class(S) ≥ class(O)","class(S) = class(O) only","class(S) > class(O)"],1,"Simple security property (no read-up): S can read O only if class(S) ≥ class(O)."],[3,"The star property (* property) states that a subject S can write object O only if:",["class(S) ≥ class(O)","class(S) = class(O) only","class(S) ≤ class(O)","class(S) > class(O)"],2,"Star property (no write-down): S can write O only if class(S) ≤ class(O)."],[3,"What is the main drawback of DAC, and what is the main drawback of MAC?",["DAC: too rigid / MAC: vulnerable to Trojan horses","DAC: vulnerable to Trojan horses / MAC: too rigid","Both are vulnerable to Trojan horses","Both are too rigid"],1,"DAC is flexible but open to Trojan-horse attacks; MAC is safe but too rigid."],[3,"In RBAC, permissions are associated with ........ and users are assigned to them.",["Tables","Roles","Views","Security classes"],1,"In RBAC permissions belong to roles, and users get permissions by being assigned roles."],[3,"Integrity in a database refers to:",["Protecting data from unauthorized access","The accuracy or correctness of the data","Making data available to all users","Backing up the data"],1,"Database integrity means the accuracy or correctness of the data."],[3,"An integrity constraint is basically:",["A Boolean expression that must evaluate to TRUE","A SQL query","A backup rule","A locking protocol"],0,"An integrity constraint is a Boolean condition that must evaluate to TRUE for every valid database state."],[3,"Constraints that are expressed directly in the schema using DDL are called:",["Implicit constraints","Schema-based (explicit) constraints","Application-based constraints","Semantic constraints"],1,"Constraints written directly in the schema with DDL are schema-based (explicit) constraints."],[3,"Domain constraints specify that the value of each attribute A must be:",["Unique","An atomic value from the domain dom(A)","A foreign key","Non-NULL"],1,"Domain constraint: each attribute value must be an atomic value from dom(A)."],[3,"A key is a superkey that:",["Contains all attributes","Is minimal (removing any attribute makes it no longer a superkey)","Can contain NULL values","Is always a foreign key"],1,"A key is a minimal superkey: removing any attribute breaks uniqueness."],[3,"The entity integrity constraint states that:",["No foreign key can be NULL","No primary key value can be NULL","Every attribute must be NOT NULL","Every table must have a foreign key"],1,"Entity integrity: no primary key value can be NULL."],[3,"The value of a foreign key in a tuple must either:",["Be unique in its own relation","Occur as a primary key value in the referenced relation, or be NULL","Always be NULL","Be different from the primary key"],1,"Referential integrity: a foreign key value must match a primary key value in the referenced relation, or be NULL."],[3,"Which operation can violate ONLY referential integrity?",["Insert","Delete","Update","Select"],1,"Deleting a tuple that other tuples reference through a foreign key can violate only referential integrity."],[3,"Which of the following is NOT an option for handling a Delete violation?",["Restrict","Cascade","Set null / Set default","Commit"],3,"Options for a delete violation are restrict, cascade, and set null/set default. Commit is not one of them."],[3,"The default option when an Insert operation violates a constraint is to:",["Cascade the insertion","Set the value to NULL","Reject the insertion","Accept it and log a warning"],2,"By default, an insert that violates a constraint is rejected."],[3,"Constraints that define what a valid database STATE must satisfy are called ........, while constraints dealing with state changes are called ........",["Transition constraints / State constraints","State constraints / Transition constraints","Domain constraints / Key constraints","Key constraints / Domain constraints"],1,"State constraints describe a valid database state; transition constraints describe valid changes between states."],[4,"An advantage of the database management approach is ..........",["Accessing all data or not","Multilevel security","Data dependent","Update anomalies"],1,"A DBMS gives users different access levels (multilevel security). The others are file-system problems."],[4,"If the same data may be stored in multiple files, this causes the data .......... problem.",["isolation","redundancy","fragmentation","volatility"],1,"Duplicate copies of the same data across files cause data redundancy (and inconsistency)."],[4,"An advantage of the database management approach: Data is ..........",["dependent on programs","integrated","redundant","Unrecoverable"],1,"A database keeps data integrated in one place and independent of application programs."],[4,"In .........., it is easy to add new constraints or change existing ones.",["File system","Database system","Both of them","None of them"],1,"In file systems constraints are buried in program code; a DBMS states them explicitly in the schema, so they are easy to change."],[4,"In a file system, integrity constraints are written in program code rather than being stated explicitly.",["True","False"],0,"True: integrity constraints get “buried” inside application program code."],[4,".......... is a logical unit of database processing.",["Operation","Transaction","Table","Relation"],1,"A transaction is the logical unit of database processing that includes one or more read/write operations."],[4,".......... means a transaction is an atomic unit of processing (completed in its entirety or not done at all).",["Atomicity","Consistency","Durability","Isolation"],0,"Atomicity = all or nothing."],[4,"Transaction .......... means a transaction shouldn't make its updates visible to other transactions until it is committed.",["consistency","isolation","durability","atomicity"],1,"Isolation hides uncommitted updates from other concurrent transactions."],[4,"The D in the ACID properties refers to .......... (committed changes must never be lost).",["dependency","Dead lock","durability","defined"],2,"Durability ensures committed updates survive any subsequent system crash."],[4,"A schedule can be tested against conflict serializability by constructing ..........",["Histogram","wait-for-graph","Gantt chart","Precedence graph"],3,"We build a precedence (serialization) graph; if it has no cycle, the schedule is conflict serializable."],[4,"What does a “cascadeless schedule” ensure?",["Transactions read only items written by committed transactions.","All transactions are executed in single-user mode.","Transactions execute without any interleaving.","Every transaction commits in the order it started."],0,"Cascadeless = reads only committed values, so no cascading rollback can occur."],[4,"The schedule S: r1(x), w1(x), r2(x), w2(x), C2, A1 causes .......... problem.",["uncommitted read","lost update","Incorrect Summary","dirty read"],3,"T2 reads and overwrites x written by uncommitted T1, which then aborts (A1): dirty read."],[4,"Which concurrency problem occurs when two transactions overwrite each other's updates?",["Incorrect Summary","Temporary Update","Lost Update","Unrepeatable Read"],2,"Both read the old value and the second write overwrites the first: lost update."],[4,"Which of the following is an example of an “incorrect summary problem”?",["A transaction's changes are overwritten by another transaction.","A transaction reads a value that another transaction has not yet committed.","Two transactions write to the same data item at the same time.","An aggregate function reads a mix of updated and non-updated values."],3,"Incorrect summary = an aggregate function (like SUM) sees some items before and some after an update."],[4,"The equivalent serial schedule of S = {r1(Z), r2(Y), w2(Y), r3(Y), r2(X), w2(X), w1(Z), w3(Y), r3(X), r1(Y), w1(Y), w3(X)} is ..........",["T1 - T2 - T3","T2 - T1 - T3","T2 - T3 - T1","not serializable"],2,"Edges: T2→T3, T2→T1, T3→T1. No cycle, so the order is T2, T3, T1."],[4,"The schedule S: r1(x), r1(y), w1(x), r2(y), r2(x), w2(y), C1, C2 is ..........",["Serializable","serial","Unrecoverable","requiring cascaded rollback"],3,"T2 reads x written by T1 before T1 commits: recoverable, but needs cascaded rollback if T1 fails (also serializable: T1 → T2)."],[4,"The main assumption of pessimistic concurrency control is that conflicts ..........",["are rare","will happen","are ignored","are not important"],1,"Pessimistic control expects conflicts to happen, so it locks items before accessing them."],[4,"Which type of lock allows multiple transactions to read the same item?",["Binary lock","Exclusive lock","Shared lock","Timestamp lock"],2,"Shared (read) locks are compatible, allowing multiple concurrent readers."],[4,"If a transaction T needs to hold a read lock on an item that already has a write lock, then ..........",["T will wait","T will rollback","T will hold the lock","the operation will reject"],0,"Read and write locks conflict, so T waits until the write lock is released."],[4,"If transaction T needs to upgrade its read lock on item X and another transaction S holds a read lock on X, then ..........",["T will wait","T will rollback","T will upgrade its lock","the operation will reject"],0,"T must wait until S releases its read lock before upgrading to an exclusive write lock."],[4,"Strict two-phase locking protocol permits releasing (exclusive) locks .......... of the transaction.",["at the beginning","during execution","at the end","never in the lifetime"],2,"Strict 2PL releases exclusive locks only at the end (after commit or abort)."],[4,"In which type of two-phase locking does a transaction not release any of its locks (exclusive or shared) until it commits or aborts?",["Basic","Strict","Conservative","Rigorous"],3,"Rigorous 2PL holds ALL locks until commit/abort (Strict 2PL holds only exclusive locks)."],[4,"In .......... two-phase locking, deadlocks are not allowed to happen.",["Basic","conservative","strict","Time stamp"],1,"Conservative 2PL locks all needed items before execution begins, preventing deadlocks."],[4,"The wait-for graph is used to detect .......... (a cycle indicates a deadlock).",["the recovery problem","the serializability","the deadlock","the integrity violation"],2,"Wait-for graph detects deadlocks; a cycle in the graph confirms a deadlock exists."],[4,".......... occurs when a particular transaction consistently waits or is restarted and never gets a chance to proceed.",["Deadlock","Dirty read","Starvation","Lost update"],2,"Starvation happens when a transaction is repeatedly rolled back or kept waiting indefinitely."],[4,"If we apply the wound-wait algorithm and an older transaction T needs an item locked by a younger transaction S, then ..........",["T will wait","T will rollback","S will wait","S will rollback"],3,"Wound-wait: the older requester T wounds (aborts) the younger holder S."],[4,"If we apply the wait-die algorithm and a younger transaction T needs an item locked by an older transaction S, then ..........",["T will wait","T will rollback","S will wait","S will rollback"],1,"Wait-die: only older transactions wait; younger requesters die (rollback)."],[4,"If a transaction T needs to read an item X and write_TS(X) > TS(T), then ..........",["T will read the item","T will wait","T will rollback","X will be locked"],2,"A younger transaction already wrote X, so T is aborted and rolled back."],[4,"If a transaction T needs to write an item X and read_TS(X) > TS(T), then ..........",["T will write the item","T will wait","T will rollback","X will be locked"],2,"A younger transaction already read X, so T is rolled back."],[4,"A .......... system restores the database to a previous consistent state following a hardware or software failure.",["concurrency control","security","recovery","integrity"],2,"The recovery subsystem restores consistency after a crash."],[4,"If .......... update is used, there is no need for the system log file.",["in-place","immediate","deferred","shadow"],3,"Shadow paging keeps the old shadow page table, so no log file is needed."],[4,"If we use UNDO/REDO, transactions that have {T commit} before the checkpoint record in the log will be ..........",["redone","undone","wait","ignored"],3,"Its updates were already flushed to disk at the checkpoint, so recovery ignores it."],[4,"If you use the immediate update protocol with a checkpoint, a transaction in the active list will be ..........",["rolled back / undone","redo","ignored","reject"],0,"Uncommitted updates may already be on disk in immediate update, so active transactions are undone."],[4,"If you use deferred update, a transaction in the active list will be ..........",["rolled back","redo","ignored","reject"],2,"In deferred update nothing was written to disk before commit, so active transactions are ignored."],[4,"If we use NO-UNDO/REDO to recover from a system failure, the log must contain ..........",["AFIM","BFIM","AFIM and BFIM","neither AFIM nor BFIM"],0,"Only redo is needed, so only the new values (AFIM) are required in the log."],[4,"In immediate update, AFIM must be flushed to the disk before a transaction commits.",["True","False"],0,"True: in UNDO/NO-REDO (immediate), updates reach disk before commit, so REDO is never needed."],[4,"The Steal/Force approach is also referred to as .......... approach (and Steal/No-Force is Undo/Redo).",["Undo/Redo","No Undo/Redo","Undo/No redo","No Undo/No Redo"],2,"Steal needs undo; Force means no redo, so Undo/No-Redo."],[4,"Why is a checkpoint used in recovery mechanisms?",["To terminate long-running transactions automatically","To reduce the time needed for recovery by identifying a recent consistent state","To prioritize redo operations over undo operations","To remove old log entries and reduce storage usage"],1,"Recovery only needs to scan the log starting from the most recent checkpoint."],[4,".......... refers to the process of identifying a user (whereas Authorization determines what a user can do).",["Authentication","Authorization","Confidentiality","Integrity"],0,"Authentication verifies identity; Authorization checks permitted actions."],[4,"If privilege is revoked from user A, who granted it to user B with the GRANT OPTION, then ..........",["the operation will be rejected","privilege is revoked from A only","privilege is revoked from B only","privilege is revoked from A and the revoke cascades to B"],3,"Revoking cascades automatically to everyone who received the privilege through A."],[4,"In MAC, a subject S from class (C) tries to read an object O from class (TS). The operation will be ..........",["accept","rejected","rollback","redo"],1,"Simple security property (no read-up): read allowed only when class(S) ≥ class(O). Here C < TS."],[4,"In MAC, a subject S from class (TS) tries to write an object O from class (C). The operation will be ..........",["Accept","rejected","rollback","wait"],1,"Star (*)-property (no write-down): requires class(S) ≤ class(O) to prevent leaking top-secret data."],[4,".......... is characterized by a high degree of flexibility, which makes it suitable for a large variety of application domains.",["DAC","MAC","RBAC","OAC"],0,"DAC is highly flexible; MAC is rigid."],[4,"The types of security controls that need to be implemented for a successful security policy are the following EXCEPT ..........",["Access control / concurrency control","Administrative controls","Technical controls","Physical controls"],0,"The three types of security controls are administrative, technical, and physical."],[4,"Confidentiality is one of the ..........",["Security pillars","access controls","rules","technical controls"],0,"Confidentiality, integrity, and availability are the three security pillars."],[4,"The mechanisms to ensure authentication include ..........",["Biometrics","access controls","Encryption","recovery problem"],0,"Biometrics identify who the user is (authentication)."],[4,"No primary key value can be NULL; this is a(n) .......... constraint.",["referential integrity","entity integrity","trigger","semantic integrity"],1,"Entity integrity forbids NULL values in any primary key."],[4,"If an insertion violates one or more constraints, the default is to .......... the operation.",["Reject","Accept","Cascade","Set default"],0,"The default action on a violating INSERT is to reject it."],[4,"Database .......... refers to the accuracy or correctness of the data in the database.",["Security","Privacy","Integrity","Confidentiality"],2,"Integrity means accuracy and correctness of database data."],[4,"Referential integrity constraints are specified between two ..........",["relations","databases","tuples","attributes"],0,"Referential integrity links a foreign key to a primary key across two relations."],[4,"If a tuple that is referenced by foreign keys is deleted, the DBMS will NOT perform which of the following?",["Restrict","Cascade","Set null or set default","UNDO"],3,"The standard referential actions are restrict, cascade, and set null/default."],[4,".......... is a complete definition or description of the database structure and constraints stored in the catalog.",["meta data","DBMS","Database","application"],0,"Metadata stores the schema and constraints in the catalog."]];          // [group, question, options, correctIndex, explanation]
+const GROUPS = [["Mid 25","Midterm 2025"],["Verified Exam","Verified midterm bank"],["Bank","MCQ question bank"],["يوسف ما نجحش","Exam questions by Youssef Nageh"]];      // [title, subtitle] per group, index = group number - 1
+const ALL_LABEL = null; // title of the "everything" choice, or null to hide it
+let POOL = [];
+const MIN_PER_Q = 1;                 // exam time = 1 minute per question
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const KEYS = "ABCDEF";
+let S = null;   // session: {mode, qs:[{q,opts,correct,pick,mark,checked}], end, timer, review, cur}
+let idxFilter = "all";
+
+function pick(n) {   // n = group number, 0 = all groups
+  POOL = BANK.filter(x => !n || x[0] === n).map(x => x.slice(1));
+  $("s-q").textContent = POOL.length;
+  $("s-d").textContent = POOL.length * MIN_PER_Q + " min";
+  document.querySelectorAll(".lec").forEach(b => { const on = +b.dataset.n === n; b.classList.toggle("on", on); b.setAttribute("aria-checked", on); });
+}
+const choices = GROUPS.map(([title, sub], i) => [i + 1, title, sub]);
+if (ALL_LABEL) choices.push([0, ALL_LABEL, ""]);
+$("lecs").innerHTML = choices.map(([n, title, sub]) =>
+  `<button class="lec" role="radio" dir="auto" data-n="${n}"><b></b><small>${sub ? "<span></span> · " : ""}${BANK.filter(x => !n || x[0] === n).length} questions</small></button>`).join("");
+document.querySelectorAll(".lec").forEach((b, i) => { b.querySelector("b").textContent = choices[i][1]; const s = b.querySelector("small span"); if (s) s.textContent = choices[i][2]; b.onclick = () => pick(+b.dataset.n); });
+pick(choices[0][0]);
+
+// theme
+try { if (localStorage.getItem("theme") === "dark") document.documentElement.classList.add("dark"); } catch (e) {}
+$("theme").onclick = () => { const d = document.documentElement.classList.toggle("dark"); try { localStorage.setItem("theme", d ? "dark" : "light"); } catch (e) {} };
+
+function view(v) { ["intro", "mode", "quiz", "practice", "result"].forEach(x => $("v-" + x).classList.toggle("hide", x !== v)); window.scrollTo(0, 0); }
+
+function newSession(mode) {
+  clearInterval(S && S.timer);
+  const qs = shuffle(POOL).map(([q, opts, c, ex]) => {
+    // TRUE/FALSE and options that point at other options ("All of the above", "C and D") keep their order
+    const tf = opts.length === 2 || opts.some(o => /above|^[A-F] (and|&) [A-F]$|^both$/i.test(o));
+    const order = tf ? opts.map((_, i) => i) : shuffle(opts.map((_, i) => i));
+    return { q, ex: ex || "", opts: order.map(i => opts[i]), correct: order.indexOf(c), pick: -1, mark: false, checked: false };
+  });
+  S = { mode, qs, review: false, onlyWrong: false, cur: 0 };
+  if (mode === "quiz") {
+    S.end = Date.now() + POOL.length * MIN_PER_Q * 60000;
+    S.timer = setInterval(tick, 1000); tick();
+    renderQuiz(); view("quiz");
+  } else { renderPractice(); view("practice"); }
+}
+
+function tick() {
+  const left = Math.max(0, Math.round((S.end - Date.now()) / 1000));
+  $("timer").textContent = "⏱ " + String(left / 60 | 0).padStart(2, "0") + ":" + String(left % 60).padStart(2, "0");
+  $("timer").style.color = left < 60 ? "var(--bad)" : "";
+  if (!left) finish();
+}
+
+const answered = () => S.qs.filter(x => x.pick >= 0).length;
+const score = () => S.qs.filter(x => x.pick === x.correct).length;
+
+function optHTML(x, i, reveal) {
+  let cls = "opt", mk = "";
+  if (reveal) {
+    if (i === x.correct) { cls += " ok"; mk = "✓"; }
+    else if (i === x.pick) { cls += " bad"; mk = "✕"; }
+  } else if (i === x.pick) cls += " sel";
+  return `<button class="${cls}" data-o="${i}"><span class="k">${KEYS[i]}</span><span class="t"></span><span class="mk">${mk}</span></button>`;
+}
+
+function qCard(x, n, reveal) {
+  const d = document.createElement("div");
+  d.className = "card q"; d.id = "q" + n;
+  d.innerHTML = `<div class="qhead"><span class="qnum">Q${n + 1}</span><button class="bm${x.mark ? " on" : ""}">${x.mark ? "★" : "☆"} Bookmark</button></div>
+    <p class="qtext"></p><div class="opts${reveal ? " locked" : ""}">${x.opts.map((_, i) => optHTML(x, i, reveal)).join("")}</div>`;
+  d.querySelector(".qtext").textContent = x.q;
+  d.querySelectorAll(".t").forEach((t, i) => t.textContent = x.opts[i]);
+  if (reveal && x.ex) { const e = document.createElement("div"); e.className = "ex"; e.innerHTML = "<b>Explanation: </b><span></span>"; e.querySelector("span").textContent = x.ex; d.append(e); }
+  d.querySelector(".bm").onclick = () => { x.mark = !x.mark; refresh(); };
+  if (!reveal) d.querySelectorAll(".opt").forEach(b => b.onclick = () => choose(x, +b.dataset.o));
+  return d;
+}
+
+function renderQuiz() {
+  const box = $("qlist"); box.innerHTML = "";
+  S.qs.forEach((x, n) => { if (!(S.review && S.onlyWrong && x.pick === x.correct)) box.append(qCard(x, n, S.review)); });
+  if (S.review && S.onlyWrong && !box.children.length) box.innerHTML = '<div class="card q"><p class="qtext">No mistakes. Every answer is correct.</p></div>';
+  ["timer", "submit"].forEach(id => $(id).classList.toggle("hide", S.review));
+  ["rv-tag", "rv-score", "exit-rv", "rv-wrong"].forEach(id => $(id).classList.toggle("hide", !S.review));
+  $("rv-wrong").textContent = S.onlyWrong ? "Show all questions" : "Show mistakes only (" + (S.qs.length - score()) + ")";
+  if (S.review) {
+    const ok = score(), pct = Math.round(ok / S.qs.length * 100);
+    $("rv-score").innerHTML = `Score: <span style="color:${pct >= 50 ? "var(--ok)" : "var(--bad)"}">${ok}/${S.qs.length}</span> (${pct}%)`;
+  }
+  $("q-prog").style.width = (S.review ? 100 : answered() / S.qs.length * 100) + "%";
+}
+
+function choose(x, i) {
+  if (S.review || (S.mode === "practice" && x.checked)) return;
+  x.pick = i;
+  if (S.mode === "practice") x.checked = true;
+  refresh();
+}
+
+// re-render keeping scroll position
+function refresh() {
+  if (S.mode === "quiz" || S.review) {
+    const y = window.scrollY; renderQuiz(); window.scrollTo(0, y);
+  } else renderPractice();
+  if (!$("idx").classList.contains("hide")) renderIndex();
+}
+
+function renderPractice() {
+  const x = S.qs[S.cur], box = $("p-card"); box.innerHTML = "";
+  const card = qCard(x, S.cur, x.checked);
+  if (x.checked) {
+    const ok = x.pick === x.correct, f = document.createElement("div");
+    f.className = "fb " + (ok ? "ok" : "bad");
+    f.textContent = ok ? "✓ Correct!" : "✕ Wrong — correct answer: " + KEYS[x.correct] + ". " + x.opts[x.correct];
+    card.append(f);
+  }
+  box.append(card);
+  $("p-pos").textContent = `Q ${S.cur + 1} / ${S.qs.length}`;
+  $("p-score").textContent = `✓ ${score()}  ✕ ${S.qs.filter(q => q.checked && q.pick !== q.correct).length}`;
+  $("p-prog").style.width = (S.cur + 1) / S.qs.length * 100 + "%";
+  $("p-prev").disabled = S.cur === 0;
+  $("p-next").textContent = S.cur === S.qs.length - 1 ? "See Results ⚑" : "Next →";
+}
+
+function go(n) {
+  if (S.mode === "practice" && !S.review) { S.cur = Math.max(0, Math.min(S.qs.length - 1, n)); renderPractice(); window.scrollTo(0, 0); }
+  else { if (!document.getElementById("q" + n)) { S.onlyWrong = false; renderQuiz(); } document.getElementById("q" + n).scrollIntoView({ behavior: "smooth" }); }  // index can jump to a card hidden by "mistakes only"
+}
+
+function askFinish() {
+  const left = S.qs.length - answered();
+  $("c-msg").textContent = left ? `You have ${left} unanswered question${left > 1 ? "s" : ""}. You can keep working or finish now.` : "All questions answered. Ready to see your score?";
+  $("confirm").classList.remove("hide");
+}
+
+function finish() {
+  clearInterval(S.timer); $("confirm").classList.add("hide"); closeIndex();
+  const ok = score(), n = S.qs.length, pct = Math.round(ok / n * 100);
+  const good = pct >= 85 ? ["Excellent Work!", "Outstanding — you have mastered this material.", "🏆"]
+             : pct >= 60 ? ["Good Job!", "Solid result. Review the questions you missed.", "👍"]
+             : ["Keep Practicing!", "Review missed questions to reinforce key concepts.", "📈"];
+  $("r-title").textContent = good[0]; $("r-sub").textContent = good[1];
+  $("r-ic").textContent = good[2]; $("r-ic").style.fontSize = "2rem";
+  $("r-ic").style.background = pct >= 60 ? "var(--okbg)" : "var(--badbg)";
+  $("r-pct").textContent = pct; $("r-ok").textContent = ok; $("r-n").textContent = n;
+  $("r-wrong").textContent = "Review My Mistakes (" + (n - ok) + ") ✕"; $("r-wrong").classList.toggle("hide", ok === n);
+  $("r-bar").style.width = pct + "%"; $("r-bar").style.background = pct >= 60 ? "var(--ok)" : "var(--bad)";
+  view("result");
+}
+
+// index sheet
+function renderIndex() {
+  const rv = S.review || S.mode === "practice";
+  const sets = { all: S.qs.map((_, i) => i), answered: [], unanswered: [], bookmarked: [] };
+  S.qs.forEach((x, i) => { (x.pick >= 0 ? sets.answered : sets.unanswered).push(i); if (x.mark) sets.bookmarked.push(i); });
+  $("i-sum").textContent = `${sets.answered.length}/${S.qs.length} answered · ${sets.bookmarked.length} bookmarked`;
+  $("i-tabs").innerHTML = "";
+  Object.keys(sets).forEach(k => {
+    const b = document.createElement("button");
+    b.className = k === idxFilter ? "on" : ""; b.textContent = `${k[0].toUpperCase() + k.slice(1)} (${sets[k].length})`;
+    b.onclick = () => { idxFilter = k; renderIndex(); };
+    $("i-tabs").append(b);
+  });
+  $("i-grid").innerHTML = "";
+  sets[idxFilter].forEach(i => {
+    const x = S.qs[i], b = document.createElement("button");
+    let c = x.pick < 0 ? "" : (S.review || (rv && x.checked)) ? (x.pick === x.correct ? "r" : "w") : "a";
+    b.className = c + (x.mark ? " m" : ""); b.textContent = i + 1;
+    b.onclick = () => { closeIndex(); go(i); };
+    $("i-grid").append(b);
+  });
+}
+function openIndex() { renderIndex(); $("idx").classList.remove("hide"); $("idx-veil").classList.remove("hide"); }
+function closeIndex() { $("idx").classList.add("hide"); $("idx-veil").classList.add("hide"); }
+
+// wiring
+$("start").onclick = () => view("mode");
+$("back").onclick = () => view("intro");
+document.querySelectorAll(".mode").forEach(b => b.onclick = () => newSession(b.dataset.mode));
+document.querySelectorAll("[data-index]").forEach(b => b.onclick = openIndex);
+$("i-close").onclick = closeIndex; $("idx-veil").onclick = closeIndex;
+$("submit").onclick = askFinish; $("p-finish").onclick = askFinish;
+$("c-no").onclick = () => $("confirm").classList.add("hide");
+$("c-yes").onclick = finish;
+$("p-prev").onclick = () => go(S.cur - 1);
+$("p-next").onclick = () => S.cur === S.qs.length - 1 ? askFinish() : go(S.cur + 1);
+$("r-review").onclick = () => { S.review = true; S.onlyWrong = false; idxFilter = "all"; renderQuiz(); view("quiz"); };
+$("r-wrong").onclick = () => { S.review = true; S.onlyWrong = true; idxFilter = "all"; renderQuiz(); view("quiz"); };
+$("rv-wrong").onclick = () => { S.onlyWrong = !S.onlyWrong; renderQuiz(); window.scrollTo(0, 0); };
+$("exit-rv").onclick = () => view("result");
+$("r-retake").onclick = () => newSession(S.mode);
+$("r-home").onclick = () => view("intro");
+
+document.addEventListener("keydown", e => {
+  if (!S || S.review || S.mode !== "practice" || $("v-practice").classList.contains("hide") || !$("confirm").classList.contains("hide")) return;
+  const x = S.qs[S.cur], k = e.key.toUpperCase();
+  const n = "123456".indexOf(k) >= 0 ? "123456".indexOf(k) : KEYS.indexOf(k);
+  if (k.length === 1 && n >= 0 && n < x.opts.length) choose(x, n);
+  else if (k === "B") { x.mark = !x.mark; renderPractice(); }
+  else if (e.key === "Enter" || e.key === "ArrowRight") $("p-next").click();
+  else if (e.key === "ArrowLeft") go(S.cur - 1);
+});
+</script>
+</body>
+</html>
